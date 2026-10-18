@@ -4,11 +4,7 @@ import 'package:kikivst_player/features/catalog/domain/catalog_search_service.da
 import 'package:kikivst_player/features/catalog/domain/catalog_source.dart';
 
 class _TestSource implements CatalogSource {
-  _TestSource({
-    required this.id,
-    required this.result,
-    this.error,
-  });
+  _TestSource({required this.id, required this.result, this.error});
 
   @override
   final String id;
@@ -29,9 +25,9 @@ class _TestSource implements CatalogSource {
 void main() {
   group('CatalogSearchService', () {
     test('does not query sources for an empty search', () async {
-      final service = CatalogSearchService(sources: [
-        _TestSource(id: 'source', result: const []),
-      ]);
+      final service = CatalogSearchService(
+        sources: [_TestSource(id: 'source', result: const [])],
+      );
 
       final response = await service.search('   ');
 
@@ -52,10 +48,12 @@ void main() {
         title: 'Second',
         artist: 'Artist B',
       );
-      final service = CatalogSearchService(sources: [
-        _TestSource(id: 'soundcloud', result: [first]),
-        _TestSource(id: 'spotify', result: [second]),
-      ]);
+      final service = CatalogSearchService(
+        sources: [
+          _TestSource(id: 'soundcloud', result: [first]),
+          _TestSource(id: 'spotify', result: [second]),
+        ],
+      );
 
       final response = await service.search('  night drive  ');
 
@@ -72,10 +70,16 @@ void main() {
         title: 'Playable result',
         artist: 'Artist',
       );
-      final service = CatalogSearchService(sources: [
-        _TestSource(id: 'working', result: [track]),
-        _TestSource(id: 'broken', result: const [], error: StateError('offline')),
-      ]);
+      final service = CatalogSearchService(
+        sources: [
+          _TestSource(id: 'working', result: [track]),
+          _TestSource(
+            id: 'broken',
+            result: const [],
+            error: StateError('offline'),
+          ),
+        ],
+      );
 
       final response = await service.search('track');
 
@@ -85,8 +89,9 @@ void main() {
     });
 
     test('reports when no catalog adapters are configured', () async {
-      final response =
-          await CatalogSearchService(sources: const []).search('track');
+      final response = await CatalogSearchService(
+        sources: const [],
+      ).search('track');
 
       expect(response.sourceCount, 0);
       expect(response.tracks, isEmpty);

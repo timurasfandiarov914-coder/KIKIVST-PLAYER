@@ -1,15 +1,11 @@
-enum CatalogProvider {
-  soundCloud,
-  spotify,
-  youtubeMusic,
-}
+enum CatalogProvider { soundCloud, spotify, youtubeMusic }
 
 extension CatalogProviderLabel on CatalogProvider {
   String get label => switch (this) {
-        CatalogProvider.soundCloud => 'SoundCloud',
-        CatalogProvider.spotify => 'Spotify',
-        CatalogProvider.youtubeMusic => 'YouTube Music',
-      };
+    CatalogProvider.soundCloud => 'SoundCloud',
+    CatalogProvider.spotify => 'Spotify',
+    CatalogProvider.youtubeMusic => 'YouTube Music',
+  };
 }
 
 class CatalogTrack {

@@ -15,9 +15,8 @@ abstract interface class StreamResolver {
 }
 
 class CompositeStreamResolver implements StreamResolver {
-  CompositeStreamResolver({
-    required List<TrackStreamResolver> resolvers,
-  }) : _resolvers = List.unmodifiable(resolvers);
+  CompositeStreamResolver({required List<TrackStreamResolver> resolvers})
+    : _resolvers = List.unmodifiable(resolvers);
 
   final List<TrackStreamResolver> _resolvers;
 

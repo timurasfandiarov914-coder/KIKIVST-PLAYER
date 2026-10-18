@@ -4,10 +4,7 @@ import '../../../core/models/catalog_track.dart';
 import 'catalog_source.dart';
 
 class SourceSearchFailure {
-  const SourceSearchFailure({
-    required this.sourceId,
-    required this.message,
-  });
+  const SourceSearchFailure({required this.sourceId, required this.message});
 
   final String sourceId;
   final String message;
@@ -19,8 +16,8 @@ class SearchResponse {
     required List<CatalogTrack> tracks,
     required this.sourceCount,
     List<SourceSearchFailure> failures = const [],
-  })  : tracks = List.unmodifiable(tracks),
-        failures = List.unmodifiable(failures);
+  }) : tracks = List.unmodifiable(tracks),
+       failures = List.unmodifiable(failures);
 
   final String query;
   final List<CatalogTrack> tracks;
@@ -102,10 +99,7 @@ class CatalogSearchService {
 }
 
 class _SourceOutcome {
-  const _SourceOutcome({
-    required this.tracks,
-    this.failure,
-  });
+  const _SourceOutcome({required this.tracks, this.failure});
 
   final List<CatalogTrack> tracks;
   final SourceSearchFailure? failure;

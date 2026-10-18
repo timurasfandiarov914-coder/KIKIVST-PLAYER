@@ -3,8 +3,7 @@ import 'package:just_audio/just_audio.dart';
 
 import '../../../core/models/playable_track.dart';
 
-class PlaybackService extends BaseAudioHandler
-    with QueueHandler, SeekHandler {
+class PlaybackService extends BaseAudioHandler with QueueHandler, SeekHandler {
   PlaybackService() {
     _player.playbackEventStream.listen(
       (_) => _publishState(),
@@ -43,13 +42,15 @@ class PlaybackService extends BaseAudioHandler
     final previousTracks = _tracks;
     _tracks = List.unmodifiable(tracks);
 
-    final sources = _tracks.map((track) {
-      return AudioSource.uri(
-        track.stream.uri,
-        headers: track.stream.headers.isEmpty ? null : track.stream.headers,
-        tag: _toMediaItem(track),
-      );
-    }).toList(growable: false);
+    final sources = _tracks
+        .map((track) {
+          return AudioSource.uri(
+            track.stream.uri,
+            headers: track.stream.headers.isEmpty ? null : track.stream.headers,
+            tag: _toMediaItem(track),
+          );
+        })
+        .toList(growable: false);
 
     try {
       await _player.setAudioSources(sources, initialIndex: initialIndex);

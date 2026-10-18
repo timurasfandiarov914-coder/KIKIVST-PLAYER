@@ -57,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
       _response = response;
       _isSearching = false;
       if (response.sourceCount == 0) {
-        _notice = 'Каталоги ещё не подключены. Поиск не подменяется демо-данными.';
+        _notice =
+            'Каталоги ещё не подключены. Поиск не подменяется демо-данными.';
       } else if (response.tracks.isEmpty && response.hasFailures) {
         _notice = 'Источники временно не ответили. Попробуй ещё раз.';
       }
@@ -76,7 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (playable == null) {
         setState(() {
-          _notice = 'Для этого трека пока нет доступного способа воспроизведения.';
+          _notice =
+              'Для этого трека пока нет доступного способа воспроизведения.';
         });
         return;
       }
@@ -86,7 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (_) {
       if (mounted) {
         setState(() {
-          _notice = 'Не удалось запустить трек. Источник мог закрыть поток или изменить доступ.';
+          _notice =
+              'Не удалось запустить трек. Источник мог закрыть поток или изменить доступ.';
         });
       }
     } finally {
@@ -132,65 +135,63 @@ class _HomeScreenState extends State<HomeScreen> {
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
           sliver: SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                _buildBrand(),
-                const SizedBox(height: 34),
-                const Text(
-                  'Музыка.\nБез лишнего.',
-                  style: TextStyle(
-                    fontSize: 38,
-                    height: 1.02,
+            delegate: SliverChildListDelegate([
+              _buildBrand(),
+              const SizedBox(height: 34),
+              const Text(
+                'Музыка.\nБез лишнего.',
+                style: TextStyle(
+                  fontSize: 38,
+                  height: 1.02,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -1.6,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Один плеер для каталогов с разрешённым поиском и воспроизведением.',
+                style: TextStyle(
+                  fontSize: 15,
+                  height: 1.45,
+                  color: Colors.white.withValues(alpha: 0.62),
+                ),
+              ),
+              const SizedBox(height: 24),
+              _buildSearchField(),
+              const SizedBox(height: 22),
+              _buildSourceStatus(),
+              if (_notice != null) ...[
+                const SizedBox(height: 16),
+                _buildNotice(_notice!),
+              ],
+              if (_isSearching) ...[
+                const SizedBox(height: 20),
+                const LinearProgressIndicator(minHeight: 2),
+              ],
+              if (tracks.isNotEmpty) ...[
+                const SizedBox(height: 28),
+                Text(
+                  'РЕЗУЛЬТАТЫ · ${tracks.length}',
+                  style: const TextStyle(
+                    fontSize: 11,
                     fontWeight: FontWeight.w800,
-                    letterSpacing: -1.6,
+                    letterSpacing: 1.6,
+                    color: Color(0xFFC8FF45),
                   ),
                 ),
                 const SizedBox(height: 12),
-                Text(
-                  'Один плеер для каталогов с разрешённым поиском и воспроизведением.',
-                  style: TextStyle(
-                    fontSize: 15,
-                    height: 1.45,
-                    color: Colors.white.withValues(alpha: 0.62),
-                  ),
+                for (final track in tracks) _buildTrackRow(track),
+              ] else if (_response != null &&
+                  _response!.sourceCount > 0 &&
+                  !_response!.hasFailures) ...[
+                const SizedBox(height: 28),
+                _buildEmptyState(
+                  icon: Icons.search_off_rounded,
+                  title: 'Ничего не найдено',
+                  body: 'Попробуй другое название или имя исполнителя.',
                 ),
-                const SizedBox(height: 24),
-                _buildSearchField(),
-                const SizedBox(height: 22),
-                _buildSourceStatus(),
-                if (_notice != null) ...[
-                  const SizedBox(height: 16),
-                  _buildNotice(_notice!),
-                ],
-                if (_isSearching) ...[
-                  const SizedBox(height: 20),
-                  const LinearProgressIndicator(minHeight: 2),
-                ],
-                if (tracks.isNotEmpty) ...[
-                  const SizedBox(height: 28),
-                  Text(
-                    'РЕЗУЛЬТАТЫ · ${tracks.length}',
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.6,
-                      color: Color(0xFFC8FF45),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  for (final track in tracks) _buildTrackRow(track),
-                ] else if (_response != null &&
-                    _response!.sourceCount > 0 &&
-                    !_response!.hasFailures) ...[
-                  const SizedBox(height: 28),
-                  _buildEmptyState(
-                    icon: Icons.search_off_rounded,
-                    title: 'Ничего не найдено',
-                    body: 'Попробуй другое название или имя исполнителя.',
-                  ),
-                ],
               ],
-            ),
+            ]),
           ),
         ),
       ],
@@ -396,33 +397,32 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(20, 22, 20, 20),
               sliver: SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    const Text(
-                      'Очередь',
-                      style: TextStyle(
-                        fontSize: 32,
-                        letterSpacing: -1,
-                        fontWeight: FontWeight.w800,
-                      ),
+                delegate: SliverChildListDelegate([
+                  const Text(
+                    'Очередь',
+                    style: TextStyle(
+                      fontSize: 32,
+                      letterSpacing: -1,
+                      fontWeight: FontWeight.w800,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      '${items.length} ${items.length == 1 ? 'трек' : 'треков'}',
-                      style: const TextStyle(color: Colors.white54),
-                    ),
-                    const SizedBox(height: 24),
-                    if (items.isEmpty)
-                      _buildEmptyState(
-                        icon: Icons.queue_music_rounded,
-                        title: 'Здесь пока тихо',
-                        body: 'Доступные для воспроизведения треки будут появляться в очереди.',
-                      )
-                    else
-                      for (var i = 0; i < items.length; i++)
-                        _buildQueueItem(items[i], i),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${items.length} ${items.length == 1 ? 'трек' : 'треков'}',
+                    style: const TextStyle(color: Colors.white54),
+                  ),
+                  const SizedBox(height: 24),
+                  if (items.isEmpty)
+                    _buildEmptyState(
+                      icon: Icons.queue_music_rounded,
+                      title: 'Здесь пока тихо',
+                      body:
+                          'Доступные для воспроизведения треки будут появляться в очереди.',
+                    )
+                  else
+                    for (var i = 0; i < items.length; i++)
+                      _buildQueueItem(items[i], i),
+                ]),
               ),
             ),
           ],

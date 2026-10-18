@@ -1,13 +1,14 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 
+import '../../../core/models/catalog_track.dart';
 import '../../../core/models/playable_track.dart';
 
 class PlaybackService extends BaseAudioHandler with QueueHandler, SeekHandler {
   PlaybackService() {
     _player.playbackEventStream.listen(
       (_) => _publishState(),
-      onError: (Object _, StackTrace __) {
+      onError: (Object _, StackTrace _) {
         playbackState.add(
           playbackState.value.copyWith(
             playing: false,
